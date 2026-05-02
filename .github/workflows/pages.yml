@@ -6,6 +6,9 @@ on:
     paths:
       - 'index.md'
       - '_config.yml'
+      - '_layouts/**'
+      - '_skills/**'
+      - '_data/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 

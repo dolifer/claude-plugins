@@ -1,0 +1,87 @@
+---
+layout: default
+---
+
+{%- assign data = site.data.plugins[page.name] -%}
+
+<p>
+  <a href="{{ '/' | relative_url }}">← back to all skills</a>
+</p>
+
+<h2>{{ page.title }}</h2>
+
+<p>
+  <span class="status status-{{ page.status }}">
+    {%- if page.status == 'live' -%}live
+    {%- elsif page.status == 'coming-soon' -%}coming soon
+    {%- elsif page.status == 'deprecated' -%}deprecated
+    {%- else -%}{{ page.status }}
+    {%- endif -%}
+  </span>
+  {%- if page.channel %}
+    &nbsp;·&nbsp; channel: <code>{{ page.channel }}</code>
+  {%- endif -%}
+  {%- if data.version and data.version != '0.0.0' %}
+    &nbsp;·&nbsp; latest published: <code>{{ data.version }}</code>
+    <a href="https://github.com/dolifer/claude-plugins/blob/main/plugins/{{ page.name }}/.claude-plugin/plugin.json" title="see the live plugin.json">↗</a>
+  {%- elsif page.status == 'coming-soon' %}
+    &nbsp;·&nbsp; <em>not yet published</em>
+  {%- endif %}
+</p>
+
+<p><strong>{{ page.description }}</strong></p>
+
+<h3>Install</h3>
+
+<p>Inside any Claude Code session:</p>
+
+<pre><code>/plugin marketplace add dolifer/claude-plugins</code></pre>
+
+{%- if page.status == 'live' %}
+<p>Then:</p>
+<pre><code>{{ page.plugin_install }}</code></pre>
+
+{%- if page.invoke %}
+<p>Invoke as:</p>
+<pre><code>{{ page.invoke }}</code></pre>
+{%- endif -%}
+
+{%- elsif page.status == 'coming-soon' %}
+<p><em>This plugin isn't published yet. Once it ships, install with:</em></p>
+<pre><code>{{ page.plugin_install }}</code></pre>
+{%- endif %}
+
+{%- if page.companion_tool %}
+<h3>Companion tool</h3>
+<p>This Skill pairs with the <a href="{{ page.companion_tool.url }}"><code>{{ page.companion_tool.name }}</code></a> CLI for verifying generated snippets:</p>
+<pre><code>{{ page.companion_tool.install }}</code></pre>
+{%- endif %}
+
+<h3>About</h3>
+
+{{ content }}
+
+<hr>
+
+<p>
+  <small>
+    Skill source-of-truth lives in <a href="https://github.com/dolifer/NGql/tree/main/.claude/skills/ngql-local"><code>dolifer/NGql:.claude/skills/ngql-local</code></a>.
+    Marketplace catalog content for this skill: <a href="https://github.com/dolifer/claude-plugins/tree/main/plugins/{{ page.name }}"><code>plugins/{{ page.name }}/</code></a>.
+  </small>
+</p>
+
+<style>
+  .status {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .status-live { background: #2ea44f; color: #fff; }
+  .status-coming-soon { background: #d29922; color: #fff; }
+  .status-deprecated { background: #6e7781; color: #fff; }
+  pre code { font-size: 0.9em; }
+</style>

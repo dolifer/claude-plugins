@@ -3,8 +3,17 @@ description: Claude Code plugin marketplace — ngql + ngql-preview Skills.
 theme: jekyll-theme-cayman
 show_downloads: false
 
-# Don't ship the catalog manifests, plugin manifests, or skill content as Pages content.
-# They're consumed by Claude Code via git, not by humans browsing the site.
+# A `skills` collection per-skill page. Files live under `_skills/`, output URLs are
+# `/skills/<name>/`. Each skill carries frontmatter (`name`, `channel`, `status`, etc.)
+# the layout reads, and a free-form Markdown body for installation/usage docs.
+collections:
+  skills:
+    output: true
+    permalink: /skills/:name/
+
+# Don't ship the catalog manifests, plugin manifests, or marketplace plugin content as
+# Pages content — they're consumed by Claude Code via git, not by humans browsing the site.
+# `_data/plugins/` IS shipped (Jekyll auto-loads it into `site.data` for Liquid).
 exclude:
   - .claude-plugin/
   - plugins/
