@@ -1,0 +1,13 @@
+title: dolifer / claude-plugins
+description: Claude Code plugin marketplace — ngql + ngql-preview Skills.
+theme: jekyll-theme-cayman
+show_downloads: false
+
+# Don't ship the catalog manifests, plugin manifests, or skill content as Pages content.
+# They're consumed by Claude Code via git, not by humans browsing the site.
+exclude:
+  - .claude-plugin/
+  - plugins/
+  - LICENSE
+  - README.md   # README.md is GitHub-facing; index.md is the Pages landing.
+  - .gitignore
