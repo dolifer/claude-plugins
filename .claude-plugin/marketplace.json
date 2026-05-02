@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "dolifer",
+  "description": "Claude Code plugins maintained by Denis Olifer. Hosts the NGql Skill across stable (`ngql`) and preview (`ngql-preview`) channels — install whichever channel matches your NGql release.",
+  "owner": {
+    "name": "Denis Olifer",
+    "url": "https://github.com/dolifer"
+  },
+  "plugins": [
+    {
+      "name": "ngql",
+      "source": "./plugins/ngql",
+      "description": "Stable Claude Code Skill for the NGql query builder. Generates NGql query-builder C# from natural language, paste, or curl. Pairs with the `dotnet-ngql` CLI to verify rendered GraphQL.",
+      "category": "graphql",
+      "tags": ["graphql", "ngql", "query-builder", "dotnet"],
+      "homepage": "https://github.com/dolifer/NGql",
+      "license": "MIT"
+    },
+    {
+      "name": "ngql-preview",
+      "source": "./plugins/ngql-preview",
+      "description": "Preview channel of the NGql Claude Code Skill. Tracks the latest preview release of NGql — install this if you're testing an upcoming NGql release; otherwise install `ngql` (stable). Both plugins can coexist in the same Claude Code session.",
+      "category": "graphql",
+      "tags": ["graphql", "ngql", "query-builder", "dotnet", "preview"],
+      "homepage": "https://github.com/dolifer/NGql",
+      "license": "MIT"
+    }
+  ]
+}
