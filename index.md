@@ -69,8 +69,8 @@ Then install whichever plugins you want from the table below. To pull updates la
 
 ## Reporting issues
 
-- **Skill content** (wrong example, hallucinated method, broken auto-trigger) — file in [dolifer/NGql/issues](https://github.com/dolifer/NGql/issues) with the `skill` label. The Skill content is generated from `dolifer/NGql`; a fix lands here automatically on the next release.
-- **Catalog manifest** (install fails, marketplace not loading, version pinning issues) — file in [dolifer/claude-plugins/issues](https://github.com/dolifer/claude-plugins/issues).
+- **Per-plugin issues** (wrong example, hallucinated method, broken auto-trigger) — open the plugin's page above and use the issue-tracker link there. Each plugin's content is generated from its source repo, so the bug lives there, not here.
+- **Catalog issues** (install fails, marketplace not loading, version pinning issues, this Pages site itself) — file in [dolifer/claude-plugins/issues](https://github.com/dolifer/claude-plugins/issues).
 
 ---
 

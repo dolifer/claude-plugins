@@ -13,6 +13,9 @@ companion_tool:
   name: dotnet-ngql
   url: https://www.nuget.org/packages/dotnet-ngql/
   install: dotnet tool install -g dotnet-ngql
+issues:
+  url: https://github.com/dolifer/NGql/issues
+  label: skill
 order: 1
 ---
 

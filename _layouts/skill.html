@@ -61,6 +61,12 @@ layout: default
 
 {{ content }}
 
+{%- if page.issues %}
+<h3>Report issues</h3>
+
+<p>Found a bug, a wrong example, or a hallucinated method? File at <a href="{{ page.issues.url }}">{{ page.issues.url | replace: 'https://github.com/', '' | replace: '/issues', '' }}/issues</a>{% if page.issues.label %} with the <code>{{ page.issues.label }}</code> label{% endif %}. The Skill content is generated from its source repo, so a fix lands in this catalog automatically on the next release.</p>
+{%- endif %}
+
 <hr>
 
 <p>
