@@ -266,7 +266,7 @@ Ask, don't guess, in these cases:
 - Do not add code comments to the generated builder unless the user asks. The fluent calls are self-describing.
 - **You may run `ngql` via Bash when the user explicitly asks** ("send this", "run that", "execute it", "try it against the endpoint"). For any other binary — `which`, `dotnet tool list`, `curl`, `cat`, `gh`, `git`, etc. — **ask first** and get explicit consent before running. Pattern: surface the intent ("want me to check whether `ngql` is installed by running `which ngql`?"), wait for "yes" / "go" / similar, then run. Never silently shell out for diagnostics.
 - **Before running `ngql` for the first time in a session, confirm two things in your message: (1) the endpoint isn't going to surprise the user — read the URL aloud (`localhost`, `staging`, `prod`, third-party) and pause for go-ahead if it's anything other than localhost or a clear sandbox; and (2) for mutations, that `--allow-mutations` is intentional.** For pure queries against localhost or services the user clearly owns, you can run without asking. For everything else, single-line confirm.
-- **If `ngql` exits non-zero, report the actual exit code and stderr verbatim, then offer one fix.** Common cases: exit 1 = the snippet didn't compile (offer to fix the snippet); exit 2 = the server returned a GraphQL `errors` array (interpret the errors); exit 3 = HTTP failure (surface the status code); exit 4 = mutation blocked (offer the `--allow-mutations` form, with the safety re-check from the previous bullet); exit 127 or "command not found" = `ngql` isn't installed — give the install command (`dotnet tool install -g dotnet-ngql`) and offer to verify the install (with permission) by running `which ngql`.
+- **If `ngql` exits non-zero, report the actual exit code and stderr verbatim, then offer one fix.** Common cases: exit 1 = the snippet didn't compile (offer to fix the snippet); exit 2 = the server returned a GraphQL `errors` array (interpret the errors); exit 3 = HTTP failure (surface the status code); exit 4 = mutation blocked (offer the `--allow-mutations` form, with the safety re-check from the previous bullet); exit 127 or "command not found" = either `ngql` isn't installed *or* `~/.dotnet/tools/` isn't on `$PATH`. For "not installed", **see the install section below** — ask the user about channel (default to whichever channel matches this Skill's plugin name) and scope (default-suggest local). For "PATH issue", offer `export PATH="$PATH:$HOME/.dotnet/tools"` for the current shell. Check both — don't assume install is the right fix.
 - **Exit 0 doesn't always mean "useful GraphQL response."** It means "the server accepted the POST and didn't signal a GraphQL `errors` array." If the response body looks like HTML, plain text, an echo dump (e.g. webhook.site, request bins), or anything other than a JSON object with a `data` field, **call that out explicitly**: "the server returned a 200 but the body isn't a GraphQL response — looks like &lt;HTML/echo/etc&gt;. Is this actually a GraphQL endpoint?" Don't claim success just because the exit code was 0.
 - **Do not loop or auto-retry on failure.** One run, one report. The user decides whether to retry.
 - **If the user reports a problem without asking you to do anything** ("no response," "didn't work," "nothing happened"), first confirm whether they ran the command at all — don't assume execution and pivot to diagnostics. Pattern: "did you run it? if yes, paste the stdout/stderr." Then, if needed, *ask* before running diagnostics.
@@ -363,19 +363,32 @@ NGql ships a companion .NET global tool, `dotnet-ngql`, that compiles a snippet 
 
 > **You may run `ngql` for the user when explicitly asked.** "Send this," "run that," "execute," "try it" — go ahead and run `ngql ...`. For first-time runs against non-localhost endpoints, single-line confirm the URL is intended. For mutations, confirm `--allow-mutations` is intended. For probing the environment (`which ngql`, `dotnet tool list`), **ask before running** — surface the intent in your message, wait for go-ahead. Never silently shell out for diagnostics.
 
-**Install (one-time):**
+**Install (one-time):** ask the user two questions before suggesting a command — channel and scope.
 
-```bash
-dotnet tool install -g dotnet-ngql
-```
+**Channel (stable vs preview).** Default to whichever channel matches *this Skill's own channel*: if the user invoked `/ngql-preview:ngql`, default-suggest preview; if they invoked `/ngql:ngql`, default-suggest stable. You can read your own plugin name from the SKILL.md frontmatter (`name: ngql` vs `name: ngql-preview`) — match that. Phrase it as a confirmation, e.g. *"You're using the preview Skill, so I'd install the preview tool to match — sound right?"* If the user disagrees, switch to the other channel.
 
-**Update to the latest:**
+| Channel | Command suffix | When to pick |
+|---|---|---|
+| stable | (no flag) | Matches `/ngql:ngql`. Production-ready code. **Note: as of mid-2026 no stable release exists on NuGet yet — install will fail with "not found in NuGet feeds" until it ships.** |
+| preview | `--prerelease` | Matches `/ngql-preview:ngql`. Tracks the latest features. The `--prerelease` flag is required to see preview versions. |
 
-```bash
-dotnet tool update -g dotnet-ngql
-```
+**Scope (local vs global).** Default-suggest **local** (per-project manifest), since it pins the tool version to the project and doesn't pollute the user's global tool set. Frame the choice:
 
-The tool's version tracks `NGql.Core` in lockstep — if the user is on a specific `NGql.Core` version, install the matching tool version (`--version 2.1.0` etc.).
+- **Local (recommended):** `dotnet new tool-manifest` (one-time per project) then `dotnet tool install dotnet-ngql [--prerelease]`. Invoked as `dotnet ngql ...`. Pinned to the project; reproducible across machines via the `.config/dotnet-tools.json` checked into git.
+- **Global:** `dotnet tool install -g dotnet-ngql [--prerelease]`. Invoked as `ngql ...`. Convenient for one-off use, but version is shared across all projects on the machine.
+
+Ask before assuming: *"Want me to install it locally to this project (recommended — it pins the version) or globally?"* Wait for the answer before running.
+
+**Update to the latest:** same channel split applies. `dotnet tool update dotnet-ngql [--prerelease]` (local) or `dotnet tool update -g dotnet-ngql [--prerelease]` (global).
+
+**Version conflict.** If install or update reports `requested version is lower than existing version`, the user has a higher version locally (often from a `--add-source ./artifacts/packages` dev install). Don't pick a side automatically — ask:
+
+- **(a) Keep your higher local version** — do nothing. The Skill stops here.
+- **(b) Downgrade to match the published version** — run `dotnet tool uninstall [-g] dotnet-ngql && dotnet tool install [-g] dotnet-ngql [--prerelease]` (uninstall + reinstall, only `dotnet-ngql` is touched, no other tools).
+
+Wait for the user's pick before running anything. The `dotnet tool` commands above are scoped to `dotnet-ngql` specifically — never list, modify, or remove other installed tools.
+
+**If `ngql` runs but reports "command not found" after install**, the user's shell can't find `~/.dotnet/tools/` on `$PATH` (global install) or hasn't picked up the manifest (local install). For global: tell them to `export PATH="$PATH:$HOME/.dotnet/tools"` (current shell) or persist it in `~/.zshrc` / `~/.bashrc`. For local: remind them to invoke as `dotnet ngql ...`, not bare `ngql ...`.
 
 ### Render-only
 
