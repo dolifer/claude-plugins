@@ -42,4 +42,4 @@ Pull the latest preview into your Claude Code session:
 
 ### Switching to stable
 
-Once the stable `ngql` channel publishes, both can coexist — invoke as `/ngql:ngql` (stable) vs `/ngql-preview:ngql` (preview) without conflict. Preview is allowed to break and iterate; stable carries SemVer guarantees.
+The [stable `ngql` channel](/skills/ngql/) is also live — both can coexist in the same Claude Code session. Invoke as `/ngql:ngql` (stable) vs `/ngql-preview:ngql` (preview). Preview is allowed to break and iterate; stable carries SemVer guarantees and ships only on `skill-v<X.Y.Z>` tags.
