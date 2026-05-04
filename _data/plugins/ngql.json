@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin.json",
   "name": "ngql",
-  "version": "0.0.0",
-  "description": "Stable build of the NGql Skill. Placeholder — overwritten by the first `make skill-publish-stable` run from dolifer/NGql.",
+  "version": "1.0.0",
+  "description": "NGql Skill — generates NGql query-builder C# from natural language, paste, or curl. Pairs with the `dotnet-ngql` CLI to verify rendered GraphQL.",
   "author": {
     "name": "Denis Olifer",
     "url": "https://github.com/dolifer"
@@ -10,5 +10,10 @@
   "homepage": "https://github.com/dolifer/NGql",
   "repository": "https://github.com/dolifer/NGql",
   "license": "MIT",
-  "keywords": ["graphql", "ngql", "query-builder", "dotnet"]
+  "keywords": [
+    "graphql",
+    "ngql",
+    "query-builder",
+    "dotnet"
+  ]
 }
