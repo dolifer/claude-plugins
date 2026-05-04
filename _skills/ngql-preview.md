@@ -9,6 +9,10 @@ description: >
 channel: preview
 status: live
 plugin_install: /plugin install ngql-preview@dolifer
+update_command: |
+  /plugin marketplace update
+  /plugin update ngql-preview@dolifer
+  /reload-plugins
 invoke: /ngql-preview:ngql
 companion_tool:
   name: dotnet-ngql
@@ -49,16 +53,6 @@ Three modes:
 The Skill is **prescriptive** — it picks one safe API idiom per situation and refuses to generate code for unsupported GraphQL constructs (named fragments, directives, subscriptions). When the request needs something NGql can't model, the Skill stops, surfaces the gap, and offers concrete workaround paths instead of producing broken code with a warning.
 
 Pairs with the `dotnet-ngql` CLI to verify rendered GraphQL — the Skill produces the snippet and command line, and (when explicitly asked) runs the tool for you, surfacing the rendered GraphQL and any execution result.
-
-### Updating
-
-Pull the latest preview into your Claude Code session:
-
-```text
-/plugin marketplace update
-/plugin update ngql-preview@dolifer
-/reload-plugins
-```
 
 ### Switching to stable
 

@@ -9,6 +9,10 @@ description: >
 channel: stable
 status: live
 plugin_install: /plugin install ngql@dolifer
+update_command: |
+  /plugin marketplace update
+  /plugin update ngql@dolifer
+  /reload-plugins
 invoke: /ngql:ngql
 companion_tool:
   name: dotnet-ngql
@@ -53,13 +57,3 @@ This is the **stable** channel — versioned by `skill-v<X.Y.Z>` tags pushed to 
 The [preview channel](/skills/ngql-preview/) tracks every push to `main` and may reference unreleased library APIs. Useful for testing upcoming NGql changes; not recommended for daily work.
 
 Both channels can coexist in the same Claude Code session — `/ngql:ngql` invokes stable, `/ngql-preview:ngql` invokes preview. Pick stable for predictable behavior, preview to ride the latest.
-
-### Updating
-
-Pull the latest stable into your Claude Code session:
-
-```text
-/plugin marketplace update
-/plugin update ngql@dolifer
-/reload-plugins
-```

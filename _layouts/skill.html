@@ -35,12 +35,9 @@ layout: default
 
 <h3>Install</h3>
 
-<p>Inside any Claude Code session:</p>
-
-<pre><code>/plugin marketplace add dolifer/claude-plugins</code></pre>
+<p>Ensure the marketplace is registered (<a href="{{ '/#add-the-marketplace' | relative_url }}">one-time setup</a>), then run:</p>
 
 {%- if page.status == 'live' %}
-<p>Then:</p>
 <pre><code>{{ page.plugin_install }}</code></pre>
 
 {%- if page.invoke %}
@@ -51,6 +48,14 @@ layout: default
 {%- elsif page.status == 'coming-soon' %}
 <p><em>This plugin isn't published yet. Once it ships, install with:</em></p>
 <pre><code>{{ page.plugin_install }}</code></pre>
+{%- endif %}
+
+{%- if page.update_command and page.status == 'live' %}
+<h3>Update</h3>
+
+<p>Pull the latest into your Claude Code session:</p>
+
+<pre><code>{{ page.update_command }}</code></pre>
 {%- endif %}
 
 {%- if page.companion_tool %}
