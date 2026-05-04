@@ -31,6 +31,8 @@ layout: default
 
 <p><strong>{{ page.description }}</strong></p>
 
+{{ content }}
+
 <h3>Install</h3>
 
 <p>Inside any Claude Code session:</p>
@@ -56,10 +58,6 @@ layout: default
 <p>This Skill pairs with the <a href="{{ page.companion_tool.url }}"><code>{{ page.companion_tool.name }}</code></a> CLI for verifying generated snippets:</p>
 <pre><code>{{ page.companion_tool.install }}</code></pre>
 {%- endif %}
-
-<h3>About</h3>
-
-{{ content }}
 
 {%- if page.issues %}
 <h3>Report issues</h3>
