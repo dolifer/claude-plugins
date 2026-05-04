@@ -26,7 +26,7 @@ Then install whichever plugins you want from the table below. To pull updates la
 
 ## Available plugins
 
-<table>
+<table class="plugins-table">
   <thead>
     <tr>
       <th>Plugin</th>
@@ -93,4 +93,12 @@ Each plugin entry inside this catalog declares its own `license`. The catalog ma
   .status-deprecated { background: #6e7781; color: #fff; }
   table { width: 100%; }
   td code, th code { font-size: 0.95em; }
+  /* Keep Plugin (col 1) and Status (col 2) on a single line — Cayman's default
+     auto-layout shrinks them and wraps "ngql-preview" or the "coming soon" pill
+     onto two lines. Description (col 4) absorbs the freed width. Scoped to the
+     plugins table so future markdown tables on this page aren't affected. */
+  .plugins-table th:nth-child(1), .plugins-table td:nth-child(1),
+  .plugins-table th:nth-child(2), .plugins-table td:nth-child(2) {
+    white-space: nowrap; width: 1%;
+  }
 </style>
